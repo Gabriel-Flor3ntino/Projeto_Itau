@@ -14,28 +14,29 @@ import java.util.List;
 @Slf4j
 public class EstatisticasService {
 
-    public final TransacaoService transacaoService;
-
+    private final TransacaoService transacaoService;
 
     public EstatisticasResponseDTO calcularEstatisticasTransacoes(Integer intervaloBusca) {
 
-        log.info("Iniciada busca de estatísticas de transações pelo período de tempo " + intervaloBusca);
+        log.info("Iniciada busca de estatísticas de transações pelo período de tempo {}", intervaloBusca);
 
         List<TransacaoRequestDTO> transacoes = transacaoService.buscarTransacoes(intervaloBusca);
 
-        if(transacoes.isEmpty()){
+        if (transacoes.isEmpty()) {
             return new EstatisticasResponseDTO(0L, 0.0, 0.0, 0.0, 0.0);
         }
 
         DoubleSummaryStatistics estatisticasTransacoes = transacoes.stream()
-                .mapToDouble(TransacaoRequestDTO::valor).summaryStatistics();
+                .mapToDouble(TransacaoRequestDTO::valor)
+                .summaryStatistics();
 
-        log.info("Estatisticas retornadas com sucesso");
-        return new EstatisticasResponseDTO(estatisticasTransacoes.getCount(),
+        log.info("Estatísticas retornadas com sucesso");
+        return new EstatisticasResponseDTO(
+                estatisticasTransacoes.getCount(),
                 estatisticasTransacoes.getSum(),
                 estatisticasTransacoes.getAverage(),
                 estatisticasTransacoes.getMin(),
-                estatisticasTransacoes.getMax());
+                estatisticasTransacoes.getMax()
+        );
     }
-
 }

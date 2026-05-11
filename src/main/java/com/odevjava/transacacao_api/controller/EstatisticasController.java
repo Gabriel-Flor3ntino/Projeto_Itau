@@ -1,8 +1,10 @@
 package com.odevjava.transacacao_api.controller;
 
-
 import com.odevjava.transacacao_api.business.services.EstatisticasService;
 import com.odevjava.transacacao_api.controller.dtos.EstatisticasResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EstatisticasController {
 
-    public final EstatisticasService estatisticasService;
+    private final EstatisticasService estatisticasService;
 
     @GetMapping
     @Operation(description = "Endpoint responsável por buscar estatísticas de transações")
@@ -27,8 +29,6 @@ public class EstatisticasController {
     public ResponseEntity<EstatisticasResponseDTO> buscarEstatisticas(
             @RequestParam(value = "intervaloBusca", required = false, defaultValue = "60") Integer intervaloBusca) {
 
-
         return ResponseEntity.ok(estatisticasService.calcularEstatisticasTransacoes(intervaloBusca));
     }
-
 }
